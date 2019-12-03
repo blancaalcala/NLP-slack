@@ -1,0 +1,11 @@
+bottle
+pymongo
+nltk
+pandas
+numpy
+python-dotenv
+cython
+scipy
+dnspython
+Flask-PyMongo
+requests
