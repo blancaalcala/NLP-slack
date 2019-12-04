@@ -27,7 +27,6 @@ class CollConection:
         info = {}
         for i in x:
             for m in i['messages']:
-                pass
                 info[m['user']]=m['text']
                 info[m['user']]=m['text']
         count_vectorizer = CountVectorizer()
@@ -36,7 +35,7 @@ class CollConection:
         df = pd.DataFrame(info_matrix, columns=count_vectorizer.get_feature_names(), index=info.keys())
         similarity_matrix = distance(df, df)
         sim_df = pd.DataFrame(similarity_matrix, columns=info.keys(), index=info.keys())
-        recom = sim_df['UNCQA7WS0'].sort_values(ascending=False)[1:]
+        recom = sim_df[user_id].sort_values(ascending=False)[1:]
         users = recom.keys()
         return users[:3]
     
@@ -76,25 +75,25 @@ class CollConection:
         message_string = " ".join(mes)
         return sid.polarity_scores(message_string)
 
-    def insertInfo(self):
+    def insertInfo(self,token):
         url = 'https://slack.com/api/'
         chat_names = []
         chat_id = []
-        x = requests.get(f'{url}groups.list?token={os.getenv("slack")}').json()   
+        x = requests.get(f'{url}groups.list?token={token}').json()   
         for i in x['groups'][:-1]:
             chat_names.append(i['name'])
             chat_id.append(i['id'])
 
         for i in range(len(chat_id)):
-            x = requests.get(f'{url}groups.info?token={os.getenv("slack")}&channel={chat_id[i]}').json()   
+            x = requests.get(f'{url}groups.info?token={token}&channel={chat_id[i]}').json()   
             users_list = x['group']['members']
             users = []
             for user in users_list:
-                u = requests.get(f'{url}users.info?token={os.getenv("slack")}&user={user}').json()   
+                u = requests.get(f'{url}users.info?token={token}&user={user}').json()   
                 users.append({'user_id':user,
                             'user_name':u['user']['real_name']})
                 
-            x = requests.get(f'{url}groups.history?token={os.getenv("slack")}&channel={chat_id[i]}&count=50').json()
+            x = requests.get(f'{url}groups.history?token={token}&channel={chat_id[i]}&count=50').json()
             messages = []
             for m in x['messages']:
                 messages.append({'text':m['text'],
@@ -104,3 +103,15 @@ class CollConection:
                         'chat_id':chat_id[i],
                         'users':users,
                         'messages':messages})
+
+    def continueCode(self,auth):
+        if auth==True:
+            return {'status':True,
+                    'response':'Your slack token was correct! Dowloading information'}
+        else: 
+            return {'status':False,
+                    'response':'Your slack token was incorrect! Try again'}
+
+    def deleteColl(self):
+        self.collection.remove({})
+        return 'Collection clean, insert your data using your slack api token'
