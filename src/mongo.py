@@ -59,10 +59,10 @@ class CollConection:
         return text_list
 
     def getUserMessages(self,user_id):
-        x = list(self.collection.find({'messages.user':'UN1Q4U5JP'},{'messages':1,'_id':0}))[0]['messages']
+        x = list(self.collection.find({'messages.user':user_id},{'messages':1,'_id':0}))[0]['messages']
         user_messages = []
         for i in x:
-            if i['user']=='UN1Q4U5JP':
+            if i['user']==user_id:
                 user_messages.append(i['text'])
         return user_messages
 

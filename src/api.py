@@ -26,7 +26,11 @@ def getuserrecommendation(user_id):
     
 @get("/chat/<chat_id>/list")
 def getchat(chat_id):   
-    return collChat.getMessages(chat_id)
+    return collChat.getChatMessages(chat_id)
+
+@get("/user/<user_id>/list")
+def getchat(user_id):   
+    return collChat.getChatMessages(user_id)
 
 @get("/chat/<chat_id>/sentiment")
 def getchatsentiment(chat_id):
