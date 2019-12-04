@@ -5,15 +5,15 @@ import os
 
 @get("/")
 def index():
-    x1 = 'Welcome to the slack NLP API!:'
-    x2 = 'Possible actions:'
-    x3 = '/user/user_id/recommend'
-    x4 = '/chat/chat_id/list'
-    x5 = '/chat/chat_id/sentiment'
-    x6 = '/user/user_id/sentiment'
-    x7 = '/refresh_info'
-    y = '\n'.join([x1,x2,x3,x4,x5,x6,x7])
-    return print(y)
+    return '''
+        Welcome to the slack NLP API!:https://github.com/blancaalcala/NLP-slack,
+        \nPossible actions:
+        \nget user recommendation: /user/user_id/recommend,
+        \nget messages from specific chat: /chat/chat_id/list,
+        \nget chat sentiment: /chat/chat_id/sentiment,
+        \nget user sentiment: /user/user_id/sentiment,  
+        \nintroduce new information: /refresh_info'''
+   
 
 @get("/user/<user_id>/recommend")
 def getuserrecommendation(user_id):
